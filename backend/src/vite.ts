@@ -1,5 +1,5 @@
 import express, { type Express } from "express";
-import { existsSync } from "fs"; // Correct import for existsSync
+import * as fs from "fs"; // Import fs module
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { nanoid } from "nanoid";
@@ -94,7 +94,7 @@ export function serveStatic(app: Express) {
   if (process.env.NODE_ENV === "production") {
     const distPath = path.resolve(__dirname, "..", "..", "frontend", "dist");
 
-    if (existsSync(distPath)) {
+    if (fs.existsSync(distPath)) {
       app.use(express.static(distPath));
 
       // Fall back to index.html for SPA routing

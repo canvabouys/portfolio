@@ -5,7 +5,7 @@ import express from "express"; // Default import for express
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage.ts";
-import { User as SelectUser } from "./schemas.ts";
+import { User as SelectUser } from "./schema.ts";
 
 
 // Extend Express.User type to include custom user fields

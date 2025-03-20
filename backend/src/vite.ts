@@ -1,5 +1,5 @@
 import express, { type Express } from "express";
-import fs from "fs";
+import fs from "fs/promises";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { nanoid } from "nanoid";
@@ -7,6 +7,9 @@ import { nanoid } from "nanoid";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+/**
+ * Logs messages with a timestamp and source identifier.
+ */
 export function log(message: string, source = "express") {
   const formattedTime = new Date().toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -18,17 +21,19 @@ export function log(message: string, source = "express") {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// Simplified setupVite for production
+/**
+ * Sets up Vite for development mode.
+ */
 export async function setupVite(app: Express, server: any) {
   if (process.env.NODE_ENV === "production") {
     // Do nothing in production
     return;
   }
-  
+
   try {
-    // Dynamically import vite only in development
-    const { createServer, createLogger } = await import('vite');
-    
+    // Dynamically import Vite only in development
+    const { createServer, createLogger } = await import("vite");
+
     const viteLogger = createLogger();
     const serverOptions = {
       middlewareMode: true,
@@ -43,13 +48,15 @@ export async function setupVite(app: Express, server: any) {
         error: (msg: string, options: any) => {
           viteLogger.error(msg, options);
           process.exit(1);
-        }
+        },
       },
       server: serverOptions,
       appType: "custom",
     });
 
     app.use(vite.middlewares);
+
+    // Serve the frontend in development
     app.use("*", async (req, res, next) => {
       const url = req.originalUrl;
 
@@ -62,8 +69,8 @@ export async function setupVite(app: Express, server: any) {
           "index.html",
         );
 
-        // Always reload the index.html file from disk in case it changes
-        let template = await fs.promises.readFile(clientTemplate, "utf-8");
+        // Reload the index.html file dynamically
+        let template = await fs.readFile(clientTemplate, "utf-8");
         template = template.replace(
           `src="/src/main.tsx"`,
           `src="/src/main.tsx?v=${nanoid()}"`,
@@ -80,6 +87,9 @@ export async function setupVite(app: Express, server: any) {
   }
 }
 
+/**
+ * Serves static files in production.
+ */
 export function serveStatic(app: Express) {
   if (process.env.NODE_ENV === "production") {
     const distPath = path.resolve(__dirname, "..", "..", "frontend", "dist");
@@ -87,7 +97,7 @@ export function serveStatic(app: Express) {
     if (fs.existsSync(distPath)) {
       app.use(express.static(distPath));
 
-      // Fall through to index.html if the file doesn't exist
+      // Fall back to index.html for SPA routing
       app.use("*", (_req, res) => {
         res.sendFile(path.resolve(distPath, "index.html"));
       });

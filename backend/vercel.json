@@ -7,7 +7,15 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "src/index.ts" },
-    { "src": "/(.*)", "dest": "src/index.ts" }
-  ]
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "STRIPE_SECRET_KEY": "sk_test_51R1SJLLKzeguWbQOTvDehLaUQjgyIKNG0kdTFRtkxPTScQNx8msMbWGT0l1lnHVG3TNZpRlnZZuiNX4fHdkHC9oX008zDQC5nr",
+    "SESSION_SECRET": "fjnldsjfdjcu3he4uccc4cmcdsl#$#$*@Mefeccdkdmfkfv"
+  },
+  "output": "standalone"
 }

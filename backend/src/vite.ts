@@ -1,5 +1,5 @@
 import express, { type Express } from "express";
-import fs from "fs/promises";
+import { existsSync } from "fs"; // Correct import for existsSync
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { nanoid } from "nanoid";
@@ -70,7 +70,7 @@ export async function setupVite(app: Express, server: any) {
         );
 
         // Reload the index.html file dynamically
-        let template = await fs.readFile(clientTemplate, "utf-8");
+        let template = await fs.promises.readFile(clientTemplate, "utf-8");
         template = template.replace(
           `src="/src/main.tsx"`,
           `src="/src/main.tsx?v=${nanoid()}"`,
@@ -94,7 +94,7 @@ export function serveStatic(app: Express) {
   if (process.env.NODE_ENV === "production") {
     const distPath = path.resolve(__dirname, "..", "..", "frontend", "dist");
 
-    if (fs.existsSync(distPath)) {
+    if (existsSync(distPath)) {
       app.use(express.static(distPath));
 
       // Fall back to index.html for SPA routing

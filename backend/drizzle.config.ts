@@ -5,10 +5,10 @@ if (!process.env.DATABASE_URL) {
 }
 
 export default defineConfig({
-  out: "./migrations",
-  schema: "../shared/schema.ts",
-  dialect: "postgresql",
+  out: "./migrations", // Output directory for migration files
+  schema: "../shared/schema.ts", // Path to shared schema
+  dialect: "postgresql", // Database dialect
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL, // Database connection URL
   },
 });

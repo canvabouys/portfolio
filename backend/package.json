@@ -1,7 +1,8 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Backend for the full-stack React + TypeScript + Node.js application",
+  "main": "src/index.ts",
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "esbuild src/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist --external:vite --external:@neondatabase/serverless",
@@ -9,12 +10,20 @@
     "check": "tsc",
     "db:push": "drizzle-kit push"
   },
+  "keywords": [
+    "backend",
+    "typescript",
+    "nodejs",
+    "express"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
     "connect-pg-simple": "^10.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.39.1",
+    "drizzle-orm": "^0.39.3",
     "drizzle-zod": "^0.7.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
@@ -41,7 +50,5 @@
     "vercel": "^41.4.1",
     "vite": "^6.2.2"
   },
-  "engines": {
-    "node": ">=18.x"
-  }
+  "type": "module"
 }

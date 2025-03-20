@@ -1,12 +1,11 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import session from "express-session";
-import express from "express"; // Default import for express
+import express from "express";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage.ts";
 import { User as SelectUser } from "./schema.ts";
-
 
 // Extend Express.User type to include custom user fields
 declare global {
@@ -39,7 +38,7 @@ async function comparePasswords(supplied: string, stored: string): Promise<boole
 /**
  * Sets up authentication middleware and routes.
  */
-export function setupAuth(app: express.Express) { // Use express.Express here
+export function setupAuth(app: express.Express) {
   const sessionSettings: session.SessionOptions = {
     secret: process.env.SESSION_SECRET || "ragam-elyssia-luxury-events-secret",
     resave: false,
@@ -66,18 +65,21 @@ export function setupAuth(app: express.Express) { // Use express.Express here
         }
         return done(null, user);
       } catch (error) {
-        return done(error);
+        return done(error as Error);
       }
     }),
   );
 
-  passport.serializeUser((user, done) => done(null, (user as SelectUser).id));
-  passport.deserializeUser(async (id: number, done) => {
+  passport.serializeUser((user: Express.User, done: (err: Error | null, id?: number) => void) => {
+    done(null, (user as SelectUser).id);
+  });
+
+  passport.deserializeUser(async (id: number, done: (err: Error | null, user?: Express.User) => void) => {
     try {
       const user = await storage.getUser(id);
       done(null, user);
     } catch (error) {
-      done(error);
+      done(error as Error);
     }
   });
 
@@ -94,7 +96,7 @@ export function setupAuth(app: express.Express) { // Use express.Express here
         password: hashedPassword,
       });
 
-      req.login(user, (err) => {
+      req.login(user, (err: Error | null) => {
         if (err) return next(err);
         res.status(201).json(user);
       });
@@ -104,12 +106,12 @@ export function setupAuth(app: express.Express) { // Use express.Express here
   });
 
   app.post("/api/login", (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
+    passport.authenticate("local", (err: Error | null, user: Express.User | false, info: any) => {
       if (err) return next(err);
       if (!user) {
         return res.status(401).json({ message: "Invalid username or password" });
       }
-      req.login(user, (err) => {
+      req.login(user, (err: Error | null) => {
         if (err) return next(err);
         res.status(200).json(user);
       });
@@ -117,7 +119,7 @@ export function setupAuth(app: express.Express) { // Use express.Express here
   });
 
   app.post("/api/logout", (req, res, next) => {
-    req.logout((err) => {
+    req.logout((err: Error | null) => {
       if (err) return next(err);
       res.sendStatus(200);
     });

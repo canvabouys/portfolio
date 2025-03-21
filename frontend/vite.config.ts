@@ -17,15 +17,6 @@ export default defineConfig({
   root: path.resolve(__dirname),
   build: {
     outDir: path.resolve(__dirname, "dist"),
-    // emptyOutDir: true,
-    // assetsDir: "assets",
-    // rollupOptions: {
-    //   output: {
-    //     entryFileNames: "assets/[name]-[hash].js",
-    //     chunkFileNames: "assets/[name]-[hash].js",
-    //     assetFileNames: "assets/[name]-[hash].[ext]",
-    //   },
-    // },
   },
   base: process.env.VITE_BASE_PATH || "/portfolio",
 });

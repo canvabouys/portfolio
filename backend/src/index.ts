@@ -17,7 +17,7 @@ const app = express();
 
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
-    ? "https://5173-canvabouys-portfolio-a5yw5jqokg.app.codeanywhere.com/"
+    ? "https://portfolio-frontend-pi-beryl.vercel.app/"
     : "http://localhost:5173", // Replace with your frontend development URL
   credentials: true,
 }));

@@ -6,19 +6,13 @@ import { serveStatic } from "./vite";
 const app = express();
 
 // CORS configuration
-// app.use(
-//   cors({
-//     origin: process.env.NODE_ENV === "production"
-//       ? process.env.FRONTEND_URL || "https://your-production-frontend-url.com"
-//       : "http://localhost:5173",
-//     credentials: true,
-//   }),
-// );
-
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
-    ? "https://portfolio-frontend-pi-beryl.vercel.app/"
-    : "http://localhost:5173", // Replace with your frontend development URL
+    ? [
+        "https://frontend-xi-lake-22.vercel.app", // Correct frontend URL
+        "https://portfolio-frontend-pi-beryl.vercel.app" // Optional: Keep old URL if still in use
+      ]
+    : "http://localhost:5173", // Development frontend URL
   credentials: true,
 }));
 

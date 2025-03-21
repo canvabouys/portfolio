@@ -9,8 +9,7 @@ const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
     ? [
-        "https://frontend-xi-lake-22.vercel.app",
-        "https://portfolio-frontend-pi-beryl.vercel.app"
+        "https://portfolio-9xdw.onrender.com"
       ]
     : "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

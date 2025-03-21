@@ -9,12 +9,16 @@ const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
     ? [
-        "https://frontend-xi-lake-22.vercel.app", // Correct frontend URL
-        "https://portfolio-frontend-pi-beryl.vercel.app" // Optional: Keep old URL if still in use
+        "https://frontend-xi-lake-22.vercel.app",
+        "https://portfolio-frontend-pi-beryl.vercel.app"
       ]
-    : "http://localhost:5173", // Development frontend URL
+    : "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 }));
+
+app.options("*", cors());
 
 // Middleware for parsing JSON and URL-encoded data
 app.use(express.json());

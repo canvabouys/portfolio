@@ -7,11 +7,11 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === "production"
-    ? [
-        "https://portfolio-9xdw.onrender.com"
-      ]
-    : "http://localhost:5173",
+  origin: [
+    "https://frontend-xi-lake-22.vercel.app",
+    "https://portfolio-frontend-pi-beryl.vercel.app",
+    "http://localhost:5173", // Include localhost for testing
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
